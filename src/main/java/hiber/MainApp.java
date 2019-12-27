@@ -27,8 +27,8 @@ public class MainApp {
       userService.addCar(car1);
       userService.addCar(car2);
 
-      user1.setCar(car1);
-      user2.setCar(car2);
+//      user1.setCar(car1);
+//      user2.setCar(car2);
 
       userService.addUser(user1);
       userService.addUser(user2);

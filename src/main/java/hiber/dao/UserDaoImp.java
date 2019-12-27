@@ -18,7 +18,10 @@ public class UserDaoImp implements UserDao {
 
    @Override
    public void addUser(User user) {
-      sessionFactory.getCurrentSession().save(user);
+      Car car = user.getCar();
+      if (!isCar(car)) {
+         sessionFactory.getCurrentSession().save(user);
+      }
    }
 
    @Override
@@ -30,7 +33,9 @@ public class UserDaoImp implements UserDao {
 
    @Override
    public void addCar(Car car) {
-      sessionFactory.getCurrentSession().save(car);
+      if (!isCar(car)) {
+         sessionFactory.getCurrentSession().save(car);
+      }
    }
 
    @Override
@@ -51,6 +56,22 @@ public class UserDaoImp implements UserDao {
          return car.getUser();
       }
       return null;
+   }
+
+   private boolean isCar(Car car) {
+      if (car != null) {
+         String name = car.getName();
+         int series = car.getSeries();
+         Car validateCar = (Car) sessionFactory.getCurrentSession().createQuery("select c from Car c where c.name = :name and c.series = :series")
+                 .setParameter("name", name)
+                 .setParameter("series", series)
+                 .uniqueResult();
+
+         if (validateCar != null) {
+            return true;
+         }
+      }
+      return false;
    }
 
 }
